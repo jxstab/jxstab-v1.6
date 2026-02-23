@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Stabilization Effect v1.6</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <span class="version-text">Версия 1.6</span>
+        <span id="fps-counter">-- FPS</span>
+        <a href="https://t.me/jeliktontech" target="_blank" class="rainbow-text">t.me/jeliktontech</a>
+    </header>
+
+    <div class="app-layout">
+        <div id="wrapper-bg" class="stabilization-wrapper">
+            <div id="phone-container">
+                <img id="phone-image" src="phone.png" alt="Телефон" draggable="false">
+            </div>
+            <div id="flash-effect"></div>
+        </div>
+
+        <div class="controls">
+            <h2>Настройки</h2>
+            <div class="control-group">
+                <label for="phone-select">Модель телефона:</label>
+                <select id="phone-select"></select>
+            </div>
+            <div class="control-group stabilization-control">
+                <label>Вращение телефона</label>
+                <div class="knob-container">
+                    <div id="stabilization-knob">
+                        <div id="knob-handle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button id="flash-btn" title="Сделать фото"><i class="fas fa-camera-retro"></i></button>
+                <button id="settings-btn" title="Настройки"><i class="fas fa-cog"></i></button>
+            </div>
+            <a href="https://t.me/jelikton?text=Привет!%20Хочу%20поддержать%20твой%20проект%20денежкой." target="_blank" class="support-button">
+                <span><i class="fas fa-rocket"></i> Поддержать проект денежкой</span>
+            </a>
+        </div>
+    </div>
+
+    <div id="terminal-container">
+        <div class="terminal-input-line">
+            <span id="terminal-prompt">&gt;</span>
+            <input type="text" id="terminal-input" placeholder="Введите команду..." autocomplete="off">
+        </div>
+    </div>
+
+    <div id="update-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Что нового?</h3>
+            <ul class="update-list">
+                <li><i class="fas fa-wrench"></i> Полностью переработана система отладки.</li>
+                <li><i class="fas fa-bolt"></i> Улучшена производительность и стабильность.</li>
+            </ul>
+            <button class="modal-close-btn">Отлично</button>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Настройки</h3>
+            <div class="dev-tool">
+                <span>Увеличить FPS (отключить размытие)</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="optimize-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <button class="modal-close-btn">Закрыть</button>
+        </div>
+    </div>
+
+    <div id="dev-tools-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Инструменты разработчика</h3>
+            <div class="dev-tool-buttons">
+                <button id="dev-stab-btn" class="dev-tool-btn">Корды (Стаб)</button>
+                <button id="dev-flash-btn" class="dev-tool-btn">Корды (Вспышка)</button>
+            </div>
+            <button class="modal-close-btn">Закрыть</button>
+        </div>
+    </div>
+
+    <audio id="flash-sound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+    <script src="app.js"></script>
+    <script src="debug.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+:root {
+    --primary-color: rgba(28, 0, 0, 0.6);
+    --secondary-color: rgba(13, 0, 0, 0.8);
+    --accent-color: #ff3333;
+    --glow-color: rgba(255, 51, 51, 0.7);
+    --text-color: #f0f0f0;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(45deg, #000000, #330000, #000000, #330000);
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
+    color: var(--text-color);
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.app-header {
+    width: 100%;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.version-text {
+    color: #888;
+    font-size: 0.9em;
+}
+
+#fps-counter {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-family: monospace;
+}
+
+.rainbow-text {
+    font-weight: bold;
+    font-size: 1.1em;
+    text-decoration: none;
+    background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow-text-animation 5s linear infinite;
+}
+
+@keyframes rainbow-text-animation {
+    to { background-position: 200% center; }
+}
+
+.app-layout {
+    display: flex;
+    gap: 20px;
+    width: 95%;
+    height: calc(100vh - 120px);
+    max-width: 1400px;
+    margin: auto;
+}
+
+#terminal-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    background: #0a0a0a;
+    border-top: 1px solid var(--border-color);
+    padding: 5px 15px;
+    display: flex;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.terminal-prompt {
+    color: var(--accent-color);
+    margin-right: 10px;
+    font-family: monospace;
+}
+
+#terminal-input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: 1em;
+    outline: none;
+}
+
+.stabilization-wrapper {
+    flex: 3;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    transition: backdrop-filter .4s ease;
+    will-change: backdrop-filter;
+    transform: translateZ(0);
+}
+
+.stabilization-wrapper.is-rotating {
+    backdrop-filter: blur(15px);
+}
+
+#phone-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-out;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+#phone-image {
+    max-height: 90%;
+    max-width: 95%;
+    user-select: none;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.controls {
+    flex: 2;
+    height: 100%;
+    overflow-y: auto;
+    background: var(--primary-color);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.controls h2 {
+    text-align: center;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+    flex-shrink: 0;
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stabilization-control label {
+    text-align: center;
+}
+
+label {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+select, button {
+    width: 100%;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+select:hover, button:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--glow-color);
+}
+
+.knob-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+}
+
+#stabilization-knob {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, #2a0000 0%, #0d0000 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0,0,0,0.7);
+    cursor: grab;
+    flex-shrink: 0;
+}
+
+#stabilization-knob:active {
+    transform: scale(.98);
+}
+
+#knob-handle {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
+    transform-origin: 50% 55px;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.support-button {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    background: linear-gradient(90deg, #ff0077, #7a00ff, #0077ff, #00ff77, #ffea00, #ff7b00, #ff0077);
+    background-size: 400% 100%;
+    animation: support-button-animation 8s linear infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.support-button span {
+    position: relative;
+    z-index: 2;
+}
+
+.support-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+    z-index: 1;
+}
+
+.support-button:hover:before {
+    left: 100%;
+}
+
+@keyframes support-button-animation {
+    to { background-position: 400% 0; }
+}
+
+.support-button i {
+    margin-right: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--primary-color);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    padding: 25px 30px;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 380px;
+}
+
+.modal-content h3 {
+    margin-bottom: 5px;
+    color: var(--accent-color);
+}
+
+.modal-close-btn {
+    margin-top: 10px;
+}
+
+.update-list {
+    list-style: none;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.update-list li {
+    margin-bottom: 10px;
+}
+
+.update-list i {
+    color: var(--accent-color);
+    margin-right: 10px;
+}
+
+.dev-tool-buttons {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.dev-tool-btn {
+    flex-grow: 1;
+}
+
+.dev-tool-btn.active {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--glow-color);
+    border-color: var(--accent-color);
+}
+
+.toggle-switch-label {
+    text-align: center;
+    margin-bottom: -10px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 51px;
+    height: 31px;
+    align-self: center;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #333;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 23px;
+    width: 23px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Адаптив под телефоны */
+@media (max-width: 900px) {
+    body {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .app-layout {
+        display: grid;
+        grid-template-columns: 58% 42%;
+        gap: 10px;
+        width: 100%;
+        height: auto;
+        min-height: calc(100vh - 120px);
+        padding: 0 10px 20px 10px;
+    }
+
+    .app-header {
+        position: sticky;
+        top: 0;
+        background: rgba(2, 0, 36, 0.8);
+        backdrop-filter: blur(10px);
+    }
+
+    .stabilization-wrapper {
+        grid-column: 1 / 2;
+        height: 80vh;
+        min-height: 450px;
+    }
+
+    #phone-container {
+        transform: scale(1.15);
+    }
+
+    /* Индивидуальные настройки масштаба для некоторых моделей телефонов */
+    body.phone-samsungs21u #phone-container,
+    body.phone-oneplus12 #phone-container,
+    body.phone-samsungs24u #phone-container,
+    body.phone-iqooneo9spp #phone-container,
+    body.phone-tecnopova4 #phone-container,
+    body.phone-iphone13pm #phone-container,
+    body.phone-oneplusace3 #phone-container {
+        transform: scale(1.0);
+    }
+
+    .controls {
+        grid-column: 2 / 3;
+        height: 80vh;
+        min-height: 450px;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .controls h2 {
+        font-size: 1.2em;
+    }
+
+    select, button, .support-button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    #stabilization-knob {
+        width: 100px;
+        height: 100px;
+    }
+
+    #knob-handle {
+        transform-origin: 50% 42.5px;
+    }
+}
